@@ -16,10 +16,16 @@ class DEMETER_API UDemeterGameInstance : public UGameInstance
 	
 public:
 	//tuning value for the upper limits of weapon stats.
+	UPROPERTY(EditDefaultsOnly, Category = GlobalTweaks)
 	float maximumTheoreticalRange; 
+	UPROPERTY(EditDefaultsOnly, Category = GlobalTweaks)
 	float maximumTheoreticalDrift;
+	UPROPERTY(EditDefaultsOnly, Category = GlobalTweaks)
 	float maximumTheoreticalSpread;
+	UPROPERTY(EditDefaultsOnly, Category = GlobalTweaks)
 	float maximumTheoreticalRecoil;
+	UPROPERTY(EditDefaultsOnly, Category = GlobalTweaks)
 	float maximumTheoreticalShotDelay;
+	UPROPERTY(EditDefaultsOnly, Category = GlobalTweaks)
 	float maximumTheoreticalReloadDelay;
 };

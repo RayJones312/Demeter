@@ -3,7 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine.h"
 #include "GameFramework/Actor.h"
+#include "WeaponPart.h"
+#include "Components/InputComponent.h"
+#include "GameFramework/InputSettings.h"
 #include "ModularGun.generated.h"
 
 UCLASS()
@@ -39,13 +43,22 @@ public:
 	float projectileVelocity;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GunStat)
-	int magazineSize; //how many rounds fit in magazine
+	int32 magazineSize; //how many rounds fit in magazine
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GunStat)
-	int currentMag; //number of rounds in current mag
+	int32 currentMag; //number of rounds in current mag
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GunStat)
-	int reserveAmmo; //how much ammo is left
+	int32 reserveAmmo; //how much ammo is left in total
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GunStat)
+	bool automatic; //whether it's a single shot per trigger pull or a non-stop pop pop with stainless steel 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GunStat)
+	bool firesEachPull; //whether or not the gun is guaranteed to fire on each trigger pull or whether it waits for the shot to be available again.
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = GunStat)
+	TArray<AWeaponPart*> parts;
 
 protected:
 	bool canFire; //whether or not the gun is able to shoot on this frame
@@ -72,6 +85,12 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	// Refresh weapon and determine weapon stats based on equipped parts
 	virtual void UpdateWeaponStats();
+	//exactly what it says
+	virtual void HandleFireInput();
+	//called from the character when the player takes their hand off of the fire button
+	void ReleaseFireInput();
+	//allows the weapon to fire again.
+	virtual void ResetFire();
 	// Fire a single bullet. 
 	virtual void FireWeapon();
 	// Reloads the magazine
@@ -80,4 +99,6 @@ public:
 	virtual void Stow();
 	// Equips the weapon so we can fire with it
 	virtual void Equip();
+	//actually puts bullets back into the magazine
+	virtual void RefillMag();
 };

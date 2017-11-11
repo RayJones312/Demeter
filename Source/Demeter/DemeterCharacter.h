@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "ModularGun.h"
 #include "DemeterCharacter.generated.h"
+
 
 class UInputComponent;
 
@@ -45,6 +47,8 @@ class ADemeterCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UMotionControllerComponent* L_MotionController;
 
+	
+
 public:
 	ADemeterCharacter();
 
@@ -80,10 +84,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	uint32 bUsingMotionControllers : 1;
 
+	//the player's guns.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	TArray<AModularGun*> Guns;
+
+private:
+	uint8 currentWeapon;
+
 protected:
 	
 	/** Fires a projectile. */
 	void OnFire();
+
+	/** Handles beginning the firing input. */
+	void StartFire();
 
 	/** Resets HMD orientation and position in VR. */
 	void OnResetVR();

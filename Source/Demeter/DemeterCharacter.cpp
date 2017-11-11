@@ -18,6 +18,8 @@ DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
 ADemeterCharacter::ADemeterCharacter()
 {
+	currentWeapon = 0;
+
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
 
@@ -102,6 +104,8 @@ void ADemeterCharacter::BeginPlay()
 		VR_Gun->SetHiddenInGame(true, true);
 		Mesh1P->SetHiddenInGame(false, true);
 	}
+
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -117,7 +121,7 @@ void ADemeterCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	// Bind fire event
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ADemeterCharacter::OnFire);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ADemeterCharacter::StartFire);
 
 	// Enable touchscreen input
 	//EnableTouchscreenMovement(PlayerInputComponent);
@@ -183,6 +187,11 @@ void ADemeterCharacter::OnFire()
 			AnimInstance->Montage_Play(FireAnimation, 1.f);
 		}
 	}
+}
+
+void ADemeterCharacter::StartFire()
+{
+	Guns[currentWeapon]->HandleFireInput();
 }
 
 void ADemeterCharacter::OnResetVR()
